@@ -9,9 +9,9 @@ using Tangy_Models;
 namespace Tangy_Business.Repository.IRepository;
 public interface ICategoryRepository
 {
-    public CategoryDTO Create(CategoryDTO categoryDTO);
-    public CategoryDTO Update(CategoryDTO categoryDTO);
-    public int Delete(int id);
-    public CategoryDTO GetById(int id);
-    public IEnumerable<CategoryDTO> GetAll();
+    public Task<CategoryDTO> Create(CategoryDTO categoryDTO);
+    public Task<CategoryDTO> Update(CategoryDTO categoryDTO);
+    public Task<int> Delete(int id);
+    public Task<CategoryDTO> GetById(int id);
+    public Task<IEnumerable<CategoryDTO>> GetAll();
 }

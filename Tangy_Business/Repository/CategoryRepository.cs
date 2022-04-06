@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,46 +27,46 @@ public class CategoryRepository : ICategoryRepository
         _db = db;
         _mapper = mapper;
     }
-    public CategoryDTO Create(CategoryDTO categoryDTO)
+    public async Task<CategoryDTO> Create(CategoryDTO categoryDTO)
     {
         var category = _mapper.Map<CategoryDTO, Category>(categoryDTO);
         category.CreatedDate = DateTime.Now;
 
         var addedCategory = _db.Categories.Add(category);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         return _mapper.Map<Category, CategoryDTO>(addedCategory.Entity);
     }
 
-    public int Delete(int id)
+    public async Task<int> Delete(int id)
     {
-        var category = _db.Categories.FirstOrDefault(x => x.Id == id);
-        if(category == null)
+        var category = await _db.Categories.FirstOrDefaultAsync(x => x.Id == id);
+        if(category != null)
         {
             _db.Categories.Remove(category);
-            return _db.SaveChanges();
+            return await _db.SaveChangesAsync();
         }
         return 0;
     }
 
-    IEnumerable<CategoryDTO> ICategoryRepository.GetAll()
+    public async Task<IEnumerable<CategoryDTO>> GetAll()
     {
         return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
     }
 
-    public CategoryDTO GetById(int id)
+    public async Task<CategoryDTO> GetById(int id)
     {
-        var category = _db.Categories.FirstOrDefault(x => x.Id == id);
-        if (category == null)
+        var category = await _db.Categories.FirstOrDefaultAsync(x => x.Id == id);
+        if (category != null)
         {
             return _mapper.Map<Category, CategoryDTO>(category);
         }
         return new CategoryDTO();
     }
 
-    CategoryDTO ICategoryRepository.Update(CategoryDTO categoryDTO)
+    public async Task<CategoryDTO> Update(CategoryDTO categoryDTO)
     {
-        var category = _db.Categories.FirstOrDefault(x => x.Id == categoryDTO.Id);
+        var category = await _db.Categories.FirstOrDefaultAsync(x => x.Id == categoryDTO.Id);
         if(category != null)
         {
             category.Name = categoryDTO.Name;
