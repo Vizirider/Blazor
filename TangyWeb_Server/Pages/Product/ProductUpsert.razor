@@ -6,6 +6,7 @@
 @inject NavigationManager _navigationManager
 @inject IFileUpload _fileUpload
 @inject IJSRuntime _jsRuntime
+@using Syncfusion.Blazor.RichTextEditor
 
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3 ml-3">@Title Product</h3>
@@ -33,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <InputTextArea @bind-Value="Product.Description" class="form-control"></InputTextArea>
+                    <SfRichTextEditor @bind-Value="Product.Description"></SfRichTextEditor>
                     <ValidationMessage For="()=>Product.Description"></ValidationMessage>
                 </div>
                 <div class="row pt-3">
@@ -60,7 +61,7 @@
                     </InputSelect>
                     <ValidationMessage For="()=>Product.CategoryId"></ValidationMessage>
                 </div>
-                <div class="form-group col-6">
+                <div class="form-group pt-4 col-6">
                     <InputFile OnChange="HandleImageUpload"></InputFile>
                 </div>
             </div>
@@ -70,6 +71,9 @@
             </div>
         </EditForm>
         }
+    </div>
+    <div class="col-md-2">
+        <img src="@Product.ImageUrl" class="w-100" />
     </div>
 </div>
 
@@ -84,7 +88,7 @@
         };
     private string Title { get; set; } = "Create";
     public bool IsLoading { get; set; }
-    public string OldImageUrl { get; set; }
+    public string OldImageUrl { get; set; } = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -118,6 +122,10 @@
         }
         else
         {
+            if (OldImageUrl != Product.ImageUrl)
+            {
+                _fileUpload.DeleteFile(OldImageUrl);
+            }
             await _productRepository.Update(Product);
             await _jsRuntime.ToastrSuccess("Product updated successfully.");
         }
