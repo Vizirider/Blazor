@@ -21,4 +21,5 @@ public class ProductDTO
     [Range(1, int.MaxValue, ErrorMessage ="Please select a category")]
     public int CategoryId { get; set; }
     public CategoryDTO Category { get; set; }
+    public ICollection<ProductPriceDTO> ProductPrices { get; set; }
 }

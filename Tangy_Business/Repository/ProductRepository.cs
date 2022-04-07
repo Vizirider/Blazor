@@ -51,12 +51,12 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<ProductDTO>> GetAll()
     {
-        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x => x.Category));
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x => x.Category).Include(x => x.ProductPrices));
     }
 
     public async Task<ProductDTO> GetById(int id)
     {
-        var product = await _db.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
+        var product = await _db.Products.Include(x => x.Category).Include(x => x.ProductPrices).FirstOrDefaultAsync(x => x.Id == id);
         if (product != null)
         {
             return _mapper.Map<Product, ProductDTO>(product);
