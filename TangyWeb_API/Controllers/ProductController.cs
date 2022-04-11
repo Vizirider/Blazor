@@ -33,7 +33,7 @@ public class ProductController : ControllerBase
                 StatusCode = StatusCodes.Status400BadRequest
             });
         }
-        var product = _productRepository.GetById(productId.Value);
+        var product = await _productRepository.GetById(productId.Value);
         if(product == null)
         {
             return BadRequest(new ErrorModelDTO()
