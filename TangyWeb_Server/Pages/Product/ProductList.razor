@@ -3,6 +3,7 @@
 @inject IProductRepository _productRepository
 @inject IJSRuntime _jsRuntime
 @inject IFileUpload _fileUpload
+@inject NavigationManager _navigationManger
 
 <_DeleteConfirmation IsParentComponentProcessing="IsLoading" ConfirmationChanged="ConfirmDelete_Click"></_DeleteConfirmation>
 <div class="row mt-4">
@@ -71,6 +72,27 @@
     private IEnumerable<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     public bool IsLoading { get; set; }
     private int DeleteProductId { get; set; } = 0;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationState;
+
+        if(!authState.User.Identity.IsAuthenticated)
+        {
+            var uri = new Uri(_navigationManger.Uri);
+            _navigationManger.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}", forceLoad: true);
+        }
+        else
+        {
+            if (!authState.User.IsInRole(Tangy_Common.SD.Role_Admin))
+            {
+                _navigationManger.NavigateTo("/ErrorPage");
+            }
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

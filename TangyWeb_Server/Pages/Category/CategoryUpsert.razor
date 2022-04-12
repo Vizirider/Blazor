@@ -1,5 +1,6 @@
 ﻿@page "/category/create"
 @page "/category/edit/{id:int}"
+@attribute [Authorize]
 
 @inject ICategoryRepository _categoryRepository
 @inject NavigationManager _navigationManager

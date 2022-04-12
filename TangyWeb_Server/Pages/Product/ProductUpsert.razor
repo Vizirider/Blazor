@@ -1,5 +1,6 @@
 ﻿@page "/product/create"
 @page "/product/edit/{id:int}"
+@attribute [Authorize]
 
 @inject ICategoryRepository _categoryRepository
 @inject IProductRepository _productRepository
