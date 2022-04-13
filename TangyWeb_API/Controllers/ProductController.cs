@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Tangy_Business.Repository.IRepository;
+
+using Tangy_Common;
 
 using Tangy_Models;
 
@@ -17,6 +20,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Role = SD.Role_Customer)]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _productRepository.GetAll());
