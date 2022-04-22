@@ -9,26 +9,26 @@ using Tangy_Common;
 using Tangy_Models;
 
 namespace TangyWeb_API;
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
-public class ProductController : ControllerBase
+public class OrderController : ControllerBase
 {
-    private readonly IProductRepository _productRepository;
-    public ProductController(IProductRepository productRepository)
+    private readonly IOrderRepository _orderRepository;
+    public OrderController(IOrderRepository orderRepository)
     {
-        _productRepository = productRepository;
+        _orderRepository = orderRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _productRepository.GetAll());
+        return Ok(await _orderRepository.GetAll());
     }
 
-    [HttpGet("{productId}")]
-    public async Task<IActionResult> Get(int? productId)
+    [HttpGet("{orderHeaderId}")]
+    public async Task<IActionResult> Get(int? orderHeaderId)
     {
-        if(productId == null || productId == 0)
+        if(orderHeaderId == null || orderHeaderId == 0)
         {
             return BadRequest(new ErrorModelDTO()
             {
@@ -36,8 +36,8 @@ public class ProductController : ControllerBase
                 StatusCode = StatusCodes.Status400BadRequest
             });
         }
-        var product = await _productRepository.GetById(productId.Value);
-        if(product == null)
+        var orderHeader = await _orderRepository.Get(orderHeaderId.Value);
+        if(orderHeader == null)
         {
             return BadRequest(new ErrorModelDTO()
             {
@@ -46,6 +46,6 @@ public class ProductController : ControllerBase
             });
         }
 
-        return Ok(product);
+        return Ok(orderHeader);
     }
 }
