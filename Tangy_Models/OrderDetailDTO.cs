@@ -16,8 +16,6 @@ public class OrderDetailDTO
 
     [Required]
     public int ProductId { get; set; }
-    [ForeignKey("ProductId")]
-    [NotMapped]
     public ProductDTO Product { get; set; }
 
     [Required]
