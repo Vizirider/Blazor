@@ -178,7 +178,7 @@ else
 
             await _localStorage.SetItemAsync(SD.Local_OrderDetails, orderDTOSaved);
 
-            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", StripeSessionAndPI[0]);
         }
         catch(Exception e)
         {

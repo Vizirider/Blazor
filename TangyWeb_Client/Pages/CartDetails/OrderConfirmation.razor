@@ -53,9 +53,8 @@
         {
             Order.OrderHeader.Status=updatedOrder.Status;
             await _localStorage.RemoveItemAsync(SD.ShoppingCart);
-        await _localStorage.RemoveItemAsync(SD.Local_OrderDetails);
+            await _localStorage.RemoveItemAsync(SD.Local_OrderDetails);
         }
-
 
           IsProcessing = false;
     }
