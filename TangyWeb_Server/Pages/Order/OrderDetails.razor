@@ -121,7 +121,7 @@ else
                                     <input value="@Order.OrderHeader.Status" type="text" readonly class="form-control" />
                                 </div>
                             </div>
-                                @if (Order.OrderHeader.Status == SD.Status_Confirmed)
+                                @if (Order.OrderHeader.Status == SD.Status_Confirmed || Order.OrderHeader.Status==SD.Status_Pending)
                                 {
                                     <input type="submit" class="btn btn-warning form-control my-1" value="Update Order Details" />
                                 }
@@ -202,6 +202,7 @@ else
 
     private async Task UpdateOrder()
     {
+        Order.OrderHeader.Status = SD.Status_Confirmed;
         var OrderHeaderDTO = await _orderRepository.UpdateHeader(Order.OrderHeader);
         Order.OrderHeader = OrderHeaderDTO;
         _jsRuntime.ToastrSuccess("Order has been updated successfully");

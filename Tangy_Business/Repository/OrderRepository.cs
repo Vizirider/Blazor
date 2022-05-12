@@ -180,7 +180,7 @@ public class OrderRepository : IOrderRepository
         data.State = status;
         if (data.Status == SD.Status_Shipped)
         {
-            data.ShippingDate = DateTime.Now;
+            data.ShippingDate = DateTime.UtcNow;
         }
         await _db.SaveChangesAsync();
         return true;
